@@ -11,6 +11,7 @@
 Adafruit_8x16matrix matrix = Adafruit_8x16matrix();
 
 const int TouchPin = 8;             // need change?????????????????
+byte button = 2;
 int speed = random(70, 500);
 int pause;
 
@@ -81,7 +82,7 @@ byte win[] = {
 
 
 void startGame(){
-    speed = random(20, 70); // reset speed block drops
+    speed = random(70, 500); // reset speed block drops
     activeRow = 0;
     activeCol = 7;
     level = 1;  // reset level to 1
@@ -109,7 +110,7 @@ boolean checkValid(int currCol) {
 // set new column drop from top of matrix
 void setNext(){
     count++;
-    speed = random(20, 70);
+    speed = random(70, 500);
     activeRow = random(15);     // pick a random col
     activeCol = 7;
 }
@@ -150,18 +151,22 @@ void setup() {
  
     matrix.begin(0x70);             // initialize the top matrix
    
-    // pinMode(TouchPin, INPUT);
-    // digitalWrite(TouchPin, HIGH);   // digital HIGH means NOT pressed
+    pinMode(button, INPUT);
+    digitalWrite(button, HIGH);   // digital HIGH means NOT pressed
 
     startGame();
 }
 
 
 void loop() {
-    // int sensorValue = digitalRead(TouchPin);
-    // if (sensorValue == 1 && checkValid(activeCol)) {
-    //     score++;
-    // }
+    if (score > 5) {
+        displayScores();
+    }
+    
+    int sensorValue = digitalRead(button);
+    if (sensorValue == 1 && checkValid(activeCol)) {
+        score++;
+    }
 
     matrix.clear();            // clear the top matrix
     matrix.drawBitmap(0, 0, theGrid, 8, 16, LED_ON);     // draw the fixed pieces in their locations
