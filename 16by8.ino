@@ -10,17 +10,18 @@
 
 Adafruit_8x16matrix matrix = Adafruit_8x16matrix();
 
-const int TouchPin = 8;             // need change?????????????????
+const int TouchPin = 8;
 byte button = 2;
 int speed = random(70, 500);
 int pause;
 
-int win_score;
 int count;
-int score = 0;
 int level;
+int score1 = 0;
+int score2 = 0;
 int activeCol = 7;      // index of currently active column
-int activeRow;
+int activeRow1;
+int activeRow2;
 
 // The fixed grid pieces
 byte theGrid[] = {   
@@ -83,10 +84,12 @@ byte win[] = {
 
 void startGame(){
     speed = random(70, 500); // reset speed block drops
-    activeRow = 0;
+    activeRow1 = 0;
+    activeRow2 = 0;
     activeCol = 7;
     level = 1;  // reset level to 1
-    score = 0;  // reset level to 0
+    score1 = 0;  // reset level to 0
+    score2 = 0;
     matrix.drawBitmap(0, 0, theGrid, 8, 16, LED_ON);
 
     void setNext();                 // kick off the first drop
@@ -111,7 +114,8 @@ boolean checkValid(int currCol) {
 void setNext(){
     count++;
     speed = random(70, 500);
-    activeRow = random(15);     // pick a random col
+    activeRow1 = random(7);     // pick a random col
+    activeRow2 = random(7);
     activeCol = 7;
 }
 
@@ -124,25 +128,40 @@ void displayScores(){
     matrix.setTextWrap(false);  // we don't want text to wrap, so it scrolls nicely
     //  matrix.setTextColor(LED_ON);
     
-    String pointString=String(score); // convert the score integer to a string
-    String theScore=String("Points: " + pointString);  // build a string containing the word "points" + the point value
-    int theScoreLength = 44 + (7 * pointString.length()); // estimating the pixel width of the string
+    String pointString1=String(score1); // convert the score integer to a string
+    String scoreOne=String("Points: " + pointString1);  // build a string containing the word "points" + the point value
+    int scoreOneLength = 44 + (7 * pointString1.length()); // estimating the pixel width of the string
     
-    matrix.setRotation(1);
-    for (int8_t x=8; x>= -(theScoreLength); x--) {       // start offscreen and scroll the level from right to left
+    String pointString2=String(score2); // convert the score integer to a string
+    String scoreTwo=String("Points: " + pointString2);  // build a string containing the word "points" + the point value
+    int scoreTwoLength = 44 + (7 * pointString2.length()); // estimating the pixel width of the string
+    
+    for (int8_t x=8; x>= -(scoreOneLength); x--) {       // start offscreen and scroll the level from right to left
         matrix.clear();
         matrix.setCursor(x,0);
-        matrix.print(theScore);
+        matrix.print(scoreOne);
+        matrix.writeDisplay();
+        // matrix.setCursor(x,8);
+        // matrix.print(scoreTwo);
+        // matrix.writeDisplay();
+
+        delay(100);
+    }
+
+    for (int8_t x=8; x>= -(scoreTwoLength); x--) {       // start offscreen and scroll the level from right to left
+        matrix.clear();
+        matrix.setCursor(x,8);
+        matrix.print(scoreTwo);
         matrix.writeDisplay();
         delay(100);
     }
-    matrix.setRotation(1);
    
 }
 
 
 void drawActiveShape(){
-    matrix.drawPixel(activeCol, activeRow, LED_ON);
+    matrix.drawPixel(activeCol, activeRow1, LED_ON);
+    matrix.drawPixel(activeCol, activeRow2, LED_ON);
 }
 
 
@@ -159,11 +178,11 @@ void setup() {
 
 
 void loop() {
-    while (score < 5) {
+    while (score1 < 5 && score2 < 5) {
     
         int sensorValue = digitalRead(button);
         if (sensorValue == 1 && checkValid(activeCol)) {
-            score++;
+            score1++;
         }
 
         matrix.clear();            // clear the top matrix
