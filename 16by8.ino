@@ -12,6 +12,7 @@ Adafruit_8x16matrix matrix = Adafruit_8x16matrix();
 
 const int TouchPin = 8;
 byte button = 2;
+volatile int buttonState = 0;         // variable for reading the pushbutton status
 int speed = random(70, 500);
 int pause;
 
@@ -172,6 +173,7 @@ void setup() {
    
     pinMode(button, INPUT);
     digitalWrite(button, HIGH);   // digital HIGH means NOT pressed
+    attachInterrupt(0, pin_ISR, CHANGE);
 
     startGame();
 }
@@ -179,11 +181,6 @@ void setup() {
 
 void loop() {
     while (score1 < 5 && score2 < 5) {
-    
-        int sensorValue = digitalRead(button);
-        if (sensorValue == 1 && checkValid(activeCol)) {
-            score1++;
-        }
 
         matrix.clear();            // clear the top matrix
         matrix.drawBitmap(0, 0, theGrid, 8, 16, LED_ON);     // draw the fixed pieces in their locations
@@ -214,4 +211,13 @@ void loop() {
     }
     displayScores();
 
+}
+
+
+void pin_ISR() {
+    buttonState = digitalRead(buttonPin);
+    int sensorValue = digitalRead(button);
+    if (sensorValue == 1 && activeCol == 0) {
+        score1++;
+    }
 }
