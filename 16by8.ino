@@ -11,7 +11,7 @@
 Adafruit_8x16matrix matrix = Adafruit_8x16matrix();
 
 const int TouchPin = 8;             // need change?????????????????
-int speed = random(20, 70);
+int speed = random(70, 500);
 int pause;
 
 int win_score;
@@ -172,7 +172,7 @@ void loop() {
     }
     else{
         setNext();
-        pause = 30;             // wait 30ms before next drop
+        pause = 100;             // wait 30ms before next drop
     }
     drawActiveShape();            // draw the active piece
 
