@@ -6,9 +6,9 @@
 
 #include <Wire.h>
 #include "Adafruit_LEDBackpack.h"
-#include "Adafruit_GFX.h"
+#include <Adafruit_GFX.h>
 
-Adafruit_8x16matrix matrix = Adafruit_8x8matrix();
+Adafruit_8x16matrix matrix = Adafruit_8x16matrix();
 
 const int TouchPin = 8;             // need change?????????????????
 int speed = random(20, 70);
@@ -58,7 +58,7 @@ byte lose[] = {
     B00000000,
     B00000000,
     B00000000
-}
+};
 
 byte win[] = {   
     B00000000,
@@ -83,9 +83,10 @@ byte win[] = {
 void startGame(){
     speed = random(20, 70); // reset speed block drops
     activeRow = 0;
+    activeCol = 0;
     level = 1;  // reset level to 1
     score = 0;  // reset level to 0
-    matrix.drawBitmap(0, 0, theGrid, 8, 8, LED_ON);
+    matrix.drawBitmap(0, 0, theGrid, 8, 16, LED_ON);
 
     void setNext();                 // kick off the first drop
     
@@ -140,7 +141,7 @@ void displayScores(){
 
 
 void drawActiveShape(){
-    matrix.drawPixel(activeCol, activeRow, LED_ON)
+    matrix.drawPixel(activeCol, activeRow, LED_ON);
 }
 
 
@@ -163,9 +164,9 @@ void loop() {
     // }
 
     matrix.clear();            // clear the top matrix
-    drawSetShape(theGrid);     // draw the fixed pieces in their locations
+    matrix.drawBitmap(0, 0, theGrid, 8, 16, LED_ON);     // draw the fixed pieces in their locations
     
-    if(active != 0 && activeCol < 8){  
+    if(activeCol < 7){  
         activeCol++;
         pause = speed;          // wait pause ms before change to next row
     }
@@ -183,10 +184,10 @@ void loop() {
     // at top of loop: if music ends, display scores
     // displayScores();
     // if (score >= count/2) {
-    //     drawSetShape(win); 
+    //     matrix.drawBitmap(0, 0, win, 8, 16, LED_ON);
     // }
     // else {
-    //     drawSetShape(lose);
+    //     matrix.drawBitmap(0, 0, lose, 8, 16, LED_ON);
     // }
 
 }
