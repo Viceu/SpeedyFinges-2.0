@@ -17,7 +17,7 @@ int pause;
 
 int win_score;
 int count;
-int score;
+int score = 0;
 int level;
 int activeCol = 7;      // index of currently active column
 int activeRow;
@@ -134,7 +134,7 @@ void displayScores(){
         matrix.setCursor(x,0);
         matrix.print(theScore);
         matrix.writeDisplay();
-        delay(50);
+        delay(5000);
     }
     matrix.setRotation(1);
    
@@ -159,40 +159,40 @@ void setup() {
 
 
 void loop() {
-    if (score > 5) {
-        displayScores();
-    }
+    while (score < 5) {
     
-    int sensorValue = digitalRead(button);
-    if (sensorValue == 1 && checkValid(activeCol)) {
-        score++;
+        int sensorValue = digitalRead(button);
+        if (sensorValue == 1 && checkValid(activeCol)) {
+            score++;
+        }
+
+        matrix.clear();            // clear the top matrix
+        matrix.drawBitmap(0, 0, theGrid, 8, 16, LED_ON);     // draw the fixed pieces in their locations
+        
+        if(activeCol > 0){  
+            activeCol--;
+            pause = speed;          // wait pause ms before change to next row
+        }
+        else{
+            setNext();
+            pause = 100;             // wait 30ms before next drop
+        }
+        drawActiveShape();            // draw the active piece
+
+        matrix.writeDisplay();     // update the LEDs with the new info
+        
+        delay(pause);                   
+
+
+        // at top of loop: if music ends, display scores
+        // displayScores();
+        // if (score >= count/2) {
+        //     matrix.drawBitmap(0, 0, win, 8, 16, LED_ON);
+        // }
+        // else {
+        //     matrix.drawBitmap(0, 0, lose, 8, 16, LED_ON);
+        // }
     }
-
-    matrix.clear();            // clear the top matrix
-    matrix.drawBitmap(0, 0, theGrid, 8, 16, LED_ON);     // draw the fixed pieces in their locations
-    
-    if(activeCol > 0){  
-        activeCol--;
-        pause = speed;          // wait pause ms before change to next row
-    }
-    else{
-        setNext();
-        pause = 100;             // wait 30ms before next drop
-    }
-    drawActiveShape();            // draw the active piece
-
-    matrix.writeDisplay();     // update the LEDs with the new info
-    
-    delay(pause);                   
-
-
-    // at top of loop: if music ends, display scores
-    // displayScores();
-    // if (score >= count/2) {
-    //     matrix.drawBitmap(0, 0, win, 8, 16, LED_ON);
-    // }
-    // else {
-    //     matrix.drawBitmap(0, 0, lose, 8, 16, LED_ON);
-    // }
+    displayScores();
 
 }
