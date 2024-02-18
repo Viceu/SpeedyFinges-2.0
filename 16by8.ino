@@ -11,7 +11,7 @@
 Adafruit_8x16matrix matrix = Adafruit_8x16matrix();
 
 const int TouchPin = 8;
-byte button = 2;
+const int button = 2;
 volatile int buttonState = 0;         // variable for reading the pushbutton status
 int speed = random(70, 500);
 int pause;
@@ -164,7 +164,6 @@ void setup() {
     matrix.begin(0x70);             // initialize the top matrix
    
     pinMode(button, INPUT);
-    digitalWrite(button, HIGH);   // digital HIGH means NOT pressed
     attachInterrupt(2, pin_ISR, RISING);
 
     startGame();
@@ -210,6 +209,7 @@ void pin_ISR() {
     buttonState = digitalRead(button);
     int sensorValue = digitalRead(button);
     if (sensorValue == 1 && activeCol == 0) {
+        Serial.println("score");
         score1++;
     }
 }
