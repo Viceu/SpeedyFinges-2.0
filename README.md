@@ -1,6 +1,7 @@
 # Speedy Fingies 2.0
 
-This is a music rhythm game! Grab a friend, pick a side with its unique play pin (button or touch pad), and play along and vibe with the music! See who wins at the end... (with a surprised ending music to vibe with as well~) Or, play solo and try to beat your last score!
+**This is a music rhythm game! Grab a friend, pick a side with its unique play pin (button or touch pad), and play along and vibe with the music! See who wins at the end... (with a surprised ending music to vibe with as well~) Or, play solo and try to beat your last score!**
+
 
 ### Inspiration
 We made a sequel to a game we made from last year, as we wished to revamp it with our new skillset. We improved the game play functionality and added key features such as multi player, multi sensors, bigger screen, and music alongside its transcribed rhythm map! The original inspiration is having a ddr game without the physical activity required.
