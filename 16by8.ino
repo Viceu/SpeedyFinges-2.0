@@ -18,7 +18,7 @@ int win_score;
 int count;
 int score;
 int level;
-int activeCol = 0;      // index of currently active column
+int activeCol = 7;      // index of currently active column
 int activeRow;
 
 // The fixed grid pieces
@@ -83,7 +83,7 @@ byte win[] = {
 void startGame(){
     speed = random(20, 70); // reset speed block drops
     activeRow = 0;
-    activeCol = 0;
+    activeCol = 7;
     level = 1;  // reset level to 1
     score = 0;  // reset level to 0
     matrix.drawBitmap(0, 0, theGrid, 8, 16, LED_ON);
@@ -111,7 +111,7 @@ void setNext(){
     count++;
     speed = random(20, 70);
     activeRow = random(15);     // pick a random col
-    activeCol = 0;
+    activeCol = 7;
 }
 
 
@@ -166,8 +166,8 @@ void loop() {
     matrix.clear();            // clear the top matrix
     matrix.drawBitmap(0, 0, theGrid, 8, 16, LED_ON);     // draw the fixed pieces in their locations
     
-    if(activeCol < 7){  
-        activeCol++;
+    if(activeCol > 0){  
+        activeCol--;
         pause = speed;          // wait pause ms before change to next row
     }
     else{
