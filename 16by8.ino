@@ -142,27 +142,19 @@ void displayScores(){
         matrix.setCursor(x,0);
         matrix.print(scoreOne);
         matrix.writeDisplay();
-        // matrix.setCursor(x,8);
-        // matrix.print(scoreTwo);
-        // matrix.writeDisplay();
-
-        delay(100);
-    }
-
-    for (int8_t x=8; x>= -(scoreTwoLength); x--) {       // start offscreen and scroll the level from right to left
-        matrix.clear();
         matrix.setCursor(x,8);
         matrix.print(scoreTwo);
         matrix.writeDisplay();
+
         delay(100);
     }
-   
+
 }
 
 
 void drawActiveShape(){
     matrix.drawPixel(activeCol, activeRow1, LED_ON);
-    matrix.drawPixel(activeCol, activeRow2, LED_ON);
+    matrix.drawPixel(activeCol, 8 + activeRow2, LED_ON);
 }
 
 
@@ -173,7 +165,7 @@ void setup() {
    
     pinMode(button, INPUT);
     digitalWrite(button, HIGH);   // digital HIGH means NOT pressed
-    attachInterrupt(0, pin_ISR, CHANGE);
+    attachInterrupt(2, pin_ISR, RISING);
 
     startGame();
 }
@@ -215,7 +207,7 @@ void loop() {
 
 
 void pin_ISR() {
-    buttonState = digitalRead(buttonPin);
+    buttonState = digitalRead(button);
     int sensorValue = digitalRead(button);
     if (sensorValue == 1 && activeCol == 0) {
         score1++;
