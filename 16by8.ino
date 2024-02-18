@@ -125,7 +125,7 @@ void displayScores(){
     //  matrix.setTextColor(LED_ON);
     
     String pointString=String(score); // convert the score integer to a string
-    String theScore=String("Points " + pointString);  // build a string containing the word "points" + the point value
+    String theScore=String("Points: " + pointString);  // build a string containing the word "points" + the point value
     int theScoreLength = 44 + (7 * pointString.length()); // estimating the pixel width of the string
     
     matrix.setRotation(1);
@@ -134,7 +134,7 @@ void displayScores(){
         matrix.setCursor(x,0);
         matrix.print(theScore);
         matrix.writeDisplay();
-        delay(5000);
+        delay(100);
     }
     matrix.setRotation(1);
    
